@@ -1,4 +1,6 @@
-﻿namespace cp_lab_4
+﻿using System;
+
+namespace cp_lab_4
 {
     enum Methods
     {
@@ -43,11 +45,11 @@
 
         public void Tabulation(double a, double b, double step, Methods methodChoice)
         {
-            Console.WriteLine("-1 count means solution was found during iteration");
+            Console.WriteLine("Disclaimer: -1 count means solution was found during tabulation");
 
             double i = a;
 
-            for (; i + step <= b; i++)
+            for (; i + step <= b; i += step)
             {
                 if (f(i) * f(i+step) > 0) {
                     continue;
@@ -77,15 +79,17 @@
 
         private bool WriteRes(double x, int count)
         {
+            int precision = -(int)Math.Log10(eps);
+
             if (Math.Abs(f(x)) < eps)
             {
-                Console.WriteLine("Solution found at: " + x + " at count = " + count);
+                Console.WriteLine($"Solution found: {x.ToString("F" + precision)} at iteration: {count}");
                 return true;
             }
             return false;
         }
 
-        public void Halving(double l, double r)
+        private void Halving(double l, double r)
         {
             if (l > r) (l, r) = (r, l);
 
@@ -112,7 +116,7 @@
             WriteRes(0.5 * (l + r), count);
         }
 
-        public void Newton(double a, double b)
+        private void Newton(double a, double b)
         {
             if (a > b) (a, b) = (b, a);
 
@@ -138,13 +142,7 @@
                 double diff = f(x) / dx;
                 x -= diff;
 
-                int precision = -(int)Math.Log10(eps);
-
-                if (Math.Abs(f(x)) < eps || Math.Abs(diff) < eps)
-                {
-                    Console.WriteLine($"Solution found: {x.ToString("F" + precision)} at iteration: {i}");
-                    return;
-                }
+                if (WriteRes(x, i)) return;
             }
 
             Console.WriteLine("No solution found");

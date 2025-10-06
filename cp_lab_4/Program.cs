@@ -66,13 +66,11 @@ class Program
 
             try
             {
-                if (tab == "y")
-                {
-                    rf.Tabulation(a, b, 1, method);
-                    return;
+                if (tab == "y") {
+                    rf.Tabulation(a, b, 0.25, method);
+                } else {
+                    rf.RunMethod(a, b, method);
                 }
-
-                rf.RunMethod(a, b, method);
             }
             catch (Exception ex)
             {
